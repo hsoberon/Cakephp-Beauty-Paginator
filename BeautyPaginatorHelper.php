@@ -80,8 +80,7 @@ class BeautyPaginatorHelper extends AppHelper {
 		
 
 		if ($pagingData['prevPage']) {
-			$page = $this->currentPage-1;
-			$page = $page != 1 ? '/'.$page : "";
+			$page = ($this->currentPage == 2) ? null : $this->currentPage - 1 ;
 
 			if($controller && $action){
 				$out = $this->Html->link($title, 
