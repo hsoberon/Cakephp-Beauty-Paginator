@@ -67,6 +67,8 @@ class BeautyPaginatorHelper extends AppHelper {
 		$disabledClass = $options['disabledClass'];
 		$tag = $options['tag'];
 		$tagClass = $options['class'];
+		$controller = $this->params['controller'];
+		$action = $this->params['action'];
 		$out = "";
 
 		$pagingArr = $this->params['paging'];
@@ -75,13 +77,22 @@ class BeautyPaginatorHelper extends AppHelper {
 		$pagingData = $this->params['paging'][$this->model];
 
 		$this->currentPage = $pagingData['page'];
-		$paginationLink = $this->getPaginationLink();
+		
 
 		if ($pagingData['prevPage']) {
 			$page = $this->currentPage-1;
 			$page = $page != 1 ? '/'.$page : "";
+
+			if($controller && $action){
+				$out = $this->Html->link($title, 
+					array('controller' => $controller, 'action' => $action, 'page' => $page), 
+					array('class' => $tagClass, 'escape' => false));
+			}else{
+				$paginationLink = $this->getPaginationLink();
+				$out = $this->Html->link($title, $paginationLink.'/'.$page, 
+					array('class' => $tagClass, 'escape' => false));
+			}
 			
-			$out = $this->Html->link($title, $paginationLink.$page, array('class' => $tagClass));
 			$out = $this->Html->tag($tag, $out, array('class' => $tagClass));
 		} else {
 			$out = $this->Html->tag($disabledTag, $title);
@@ -100,7 +111,7 @@ class BeautyPaginatorHelper extends AppHelper {
 	public function next($title = null, $options = array()) {
 		$defaults = array(
 			'disabledTag' => 'a', 'disabledClass' => 'disabled', 'tag' => 'li',
-			'class' => ''
+			'class' => '',	
 		);
 		$options += $defaults;
 		
@@ -108,6 +119,8 @@ class BeautyPaginatorHelper extends AppHelper {
 		$disabledClass = $options['disabledClass'];
 		$tag = $options['tag'];
 		$tagClass = $options['class'];
+		$controller = $this->params['controller'];
+		$action = $this->params['action'];
 		$out = "";
 
 		$pagingArr = $this->params['paging'];
@@ -116,11 +129,20 @@ class BeautyPaginatorHelper extends AppHelper {
 		$pagingData = $this->params['paging'][$this->model];
 		$this->currentPage = $pagingData['page'];
 		
-		$paginationLink = $this->getPaginationLink();
+		
 		if ($pagingData['nextPage']) {
-			$page = $this->currentPage+1;
+			$page = $this->currentPage + 1;
+
+			if($controller && $action){
+				$out = $this->Html->link($title, 
+					array('controller' => $controller, 'action' => $action, 'page' => $page), 
+					array('class' => $tagClass, 'escape' => false));
+			}else{
+				$paginationLink = $this->getPaginationLink();
+				$out = $this->Html->link($title, $paginationLink.'/'.$page, 
+					array('class' => $tagClass, 'escape' => false));
+			}
 			
-			$out = $this->Html->link($title, $paginationLink.'/'.$page, array('class' => $tagClass));
 			$out = $this->Html->tag($tag, $out, array('class' => $tagClass));
 		} else {
 			$out = $this->Html->tag($disabledTag, $title);
